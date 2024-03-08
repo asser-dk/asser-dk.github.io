@@ -10,7 +10,7 @@ No matter if you are loading a static file, or dynamically loading a collocated 
 
 A reliable strategy that *I* found is to use the Module Version Id (MVID) as a `version` query parameter.
 
-Say I have a component `Foo.razor` living in a RCL (Component Library) project. It has a collocated `Roo.razor.js` file that I want to dynamically load.
+Say I have a component `Foo.razor` living in a RCL (Component Library) project. It has a collocated `Foo.razor.js` file that I want to dynamically load.
 
 ```csharp
 // Snippet of Foo.razor (or Foo.razor.cs for that matter)
@@ -66,7 +66,7 @@ And the same approach for a `<script>` tag would also work. (I chose to use `Pro
 
 This approach works great (for me) because:
 
-* It works for both `<script>` tags and `IJSRuntime.InvokeAsync` invocations
+* It works for both `<script>` tags and `IJSRuntime.InvokeAsync()` invocations
 * It works the same no matter if your components live in a RCL (Razor (Blazor) Component Library) or directly in a blazor site/app
 * You can actually take advantage of browser caches instead of voiding them using either the "current timestamp" or a new guid
 * It's faster than using a hash of the static files
