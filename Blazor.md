@@ -1,6 +1,15 @@
 # Blazor
 
-[Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor) is one of dotnets latest web app frameworks.
+<!-- TOC -->
+* [Blazor](#blazor)
+  * [Cache invalidation strategies](#cache-invalidation-strategies)
+    * [Use the ModuleVersionId as a version query string](#use-the-moduleversionid-as-a-version-query-string)
+      * [Deterministic Compilation](#deterministic-compilation)
+  * [ConfigureAwait in Blazor](#configureawait-in-blazor)
+    * [Sources](#sources)
+<!-- TOC -->
+
+[Blazor](https://dotnet.microsoft.com/en-us/apps/aspnet/web-apps/blazor) is one of the latest (web) app frameworks in .NET.
 
 ## Cache invalidation strategies
 
@@ -75,12 +84,19 @@ This approach works great (for me) because:
 Some downsides that I see:
 
 * Low cache granularity - Since the MVID changes with **any** modification to a project you migth cause a higher number of unnecessary cache invalidations. Having your components in their own separate RCL projects can reduce this however.
-* 
-
-
 
 #### Deterministic Compilation
 
 As mentioned above, if you enable [Deterministic Compilation](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/compiler-options/code-generation#deterministic) the MVID will remain the same over repeated builds as long as the "input" (for the entire project - see link) remains the same. Without this MSBuild will also include the current timestamp 
 
  (You should probably have deterministic compilation enabled by default in most cases anyways.)
+
+## ConfigureAwait in Blazor
+
+As Blazor is a UI framework you **do not** want to use `ConfigureAwait(false)` in your async methods on your components.
+
+Since  `ConfigureAwait(true)` is the default in Blazor consider disabling the `CA2007` warning in your component libraries. Also, if your Blazor UI projects also only contain blazor pages and components you can probably also disable the warning in these.
+
+### Sources
+
+- https://github.com/dotnet/aspnetcore/issues/19004
