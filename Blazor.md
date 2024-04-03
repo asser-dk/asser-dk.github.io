@@ -68,7 +68,7 @@ public static class IJSRuntimeExtensions
 You would also be able to use this in a `<script>` or `<link>` tag in your layout or `.cshtml` file:
 
 ```html
-<link href="css/site.css?version=@(Assembly.GetAssembly(typeof(Program))!.ManifestModule.ModuleVersionId.ToString())" rel="stylesheet" />
+<link href="css/site.css?version=@(Assembly.GetAssembly(typeof(Program))!.ManifestModule.ModuleVersionId.ToString("N"))" rel="stylesheet" />
 ```
 
 And the same approach for a `<script>` tag would also work. (I chose to use `Program.cs` as the "assembly pointer" in this case but again change it to whatever suits your needs.)
@@ -84,6 +84,7 @@ This approach works great (for me) because:
 Some downsides that I see:
 
 * Low cache granularity - Since the MVID changes with **any** modification to a project you migth cause a higher number of unnecessary cache invalidations. Having your components in their own separate RCL projects can reduce this however.
+* You are exposing the MVID of your assemblies to the client - This might be a security concern in some cases. Maybe consider hashing the MVID + a random seed.  
 
 #### Deterministic Compilation
 
